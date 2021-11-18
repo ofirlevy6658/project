@@ -31,4 +31,30 @@ export default createTheme({
 			color: "white",
 		},
 	},
+	components: {
+		MuiPaper: {
+			styleOverrides: {
+				rounded: {
+					backgroundColor: `${arcBlue}`,
+					color: "white",
+					borderRadius: "0px",
+				},
+			},
+		},
+		MuiMenuItem: {
+			styleOverrides: {
+				root: {
+					fontFamily: "Raleway",
+					textTransform: "none",
+					fontWeight: "700",
+					fontSize: "1rem",
+					color: "white",
+					opacity: 0.7,
+					"&:hover": {
+						opacity: 1,
+					},
+				},
+			},
+		},
+	},
 });
