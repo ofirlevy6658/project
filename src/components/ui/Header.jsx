@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
 	AppBar,
@@ -93,20 +93,23 @@ export default function Header() {
 		},
 	];
 
-	const routes = [
-		{ name: "Home", link: "/", activeIndex: 0 },
-		{
-			name: "Services",
-			link: "/services",
-			activeIndex: 1,
-			ariaOwns: anchorEl ? "simple-menu" : undefined,
-			ariaPopup: anchorEl ? "true" : undefined,
-			mouseOver: (event) => handleClick(event),
-		},
-		{ name: "The Revolution", link: "/revolution", activeIndex: 2 },
-		{ name: "About Us", link: "/about", activeIndex: 3 },
-		{ name: "Contact Us", link: "/contact", activeIndex: 4 },
-	];
+	const routes = useMemo(
+		() => [
+			{ name: "Home", link: "/", activeIndex: 0 },
+			{
+				name: "Services",
+				link: "/services",
+				activeIndex: 1,
+				ariaOwns: anchorEl ? "simple-menu" : undefined,
+				ariaPopup: anchorEl ? "true" : undefined,
+				mouseOver: (event) => handleClick(event),
+			},
+			{ name: "The Revolution", link: "/revolution", activeIndex: 2 },
+			{ name: "About Us", link: "/about", activeIndex: 3 },
+			{ name: "Contact Us", link: "/contact", activeIndex: 4 },
+		],
+		[anchorEl]
+	);
 
 	useEffect(() => {
 		[...menuOptions, ...routes].forEach((route) => {
@@ -123,7 +126,7 @@ export default function Header() {
 					break;
 			}
 		});
-	}, [value, selectedIndex]);
+	}, [value, selectedIndex, menuOptions, routes]);
 
 	const handleChange = (e, newValue) => {
 		setValue(newValue);
