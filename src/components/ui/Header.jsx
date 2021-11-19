@@ -47,24 +47,16 @@ const Div = styled(`div`)(({ theme }) => ({
 	},
 }));
 
-const StyledTab = styled(Tab)(({ theme }) => ({
-	...theme.typography.tab,
-	minWidth: 10,
-	marginLeft: "25px",
-	// "&:hover": {
-	// 	backgroundColor: "blue",
-	// },
-}));
-
 const StyledButton = styled(Button)(({ theme }) => ({
 	borderRadius: "50px",
 	height: "45px",
 	...theme.typography.estimate,
+	marginLeft: "50px",
+	marginRight: "25px",
+	"&:hover": {
+		backgroundColor: theme.palette.secondary.light,
+	},
 }));
-
-const selectedStyle = {
-	opacity: 0.7,
-};
 
 export default function Header() {
 	const theme = useTheme();
@@ -79,51 +71,59 @@ export default function Header() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const openMenu = Boolean(anchorEl);
 
+	const menuOptions = [
+		{ name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
+		{
+			name: "Custom Software Development",
+			link: "/customsoftware",
+			activeIndex: 1,
+			selectedIndex: 1,
+		},
+		{
+			name: "iOS/Android App Development",
+			link: "/mobileapps",
+			activeIndex: 1,
+			selectedIndex: 2,
+		},
+		{
+			name: "Website Development",
+			link: "/websites",
+			activeIndex: 1,
+			selectedIndex: 3,
+		},
+	];
+
+	const routes = [
+		{ name: "Home", link: "/", activeIndex: 0 },
+		{
+			name: "Services",
+			link: "/services",
+			activeIndex: 1,
+			ariaOwns: anchorEl ? "simple-menu" : undefined,
+			ariaPopup: anchorEl ? "true" : undefined,
+			mouseOver: (event) => handleClick(event),
+		},
+		{ name: "The Revolution", link: "/revolution", activeIndex: 2 },
+		{ name: "About Us", link: "/about", activeIndex: 3 },
+		{ name: "Contact Us", link: "/contact", activeIndex: 4 },
+	];
+
 	useEffect(() => {
-		switch (window.location.pathname) {
-			case "/":
-				if (value !== 0) setValue(0);
-				break;
-			case "/services":
-				if (value !== 1) {
-					setValue(1);
-					setSelectedIndex(0);
-				}
-				break;
-			case "/customsoftware":
-				if (value !== 1) {
-					setValue(1);
-					setSelectedIndex(1);
-				}
-				break;
-			case "/mobileapps":
-				if (value !== 1) {
-					setValue(1);
-					setSelectedIndex(2);
-				}
-				break;
-			case "/websites":
-				if (value !== 1) {
-					setValue(1);
-					setSelectedIndex(3);
-				}
-				break;
-			case "/revolution":
-				if (value !== 2) setValue(2);
-				break;
-			case "/about":
-				if (value !== 3) setValue(3);
-				break;
-			case "/contact":
-				if (value !== 4) setValue(4);
-				break;
-			case "/estimate":
-				if (value !== 5) setValue(5);
-				break;
-			default:
-				break;
-		}
-	}, [value]);
+		[...menuOptions, ...routes].forEach((route) => {
+			switch (window.location.pathname) {
+				case `${route.link}`:
+					if (value !== route.activeIndex) {
+						setValue(route.activeIndex);
+						if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
+							setSelectedIndex(route.selectedIndex);
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		});
+	}, [value, selectedIndex]);
 
 	const handleChange = (e, newValue) => {
 		setValue(newValue);
@@ -139,12 +139,6 @@ export default function Header() {
 		setSelectedIndex(i);
 		setAnchorEl(null);
 	};
-	const menuOptions = [
-		{ name: "Services", link: "services" },
-		{ name: "Custom Software Development", link: "/customsoftware" },
-		{ name: "Mobile App Development", link: "/mobileapps" },
-		{ name: "Websites Development", link: "websites" },
-	];
 
 	const tabs = (
 		<>
@@ -154,23 +148,18 @@ export default function Header() {
 				onChange={handleChange}
 				textColor="inherit"
 			>
-				<StyledTab label="Home" component={RouterLink} to="/" />
-				<StyledTab
-					id="basic-button"
-					aria-controls="basic-menu"
-					aria-expanded={openMenu ? "true" : undefined}
-					onMouseOver={handleClick}
-					label="Services"
-					component={RouterLink}
-					to="/services"
-				/>
-				<StyledTab
-					label="The Revolution"
-					component={RouterLink}
-					to="/revolution"
-				/>
-				<StyledTab label="About Us" component={RouterLink} to="/about" />
-				<StyledTab label="Contact Us" component={RouterLink} to="/contact" />
+				{routes.map((route, index) => (
+					<Tab
+						key={`${route}${index}`}
+						sx={{ ...theme.typography.tab, minWidth: 10, marginLeft: "25px" }}
+						component={RouterLink}
+						to={route.link}
+						label={route.name}
+						aria-owns={route.ariaOwns}
+						aria-haspopup={route.ariaPopup}
+						onMouseOver={route.mouseOver}
+					/>
+				))}
 			</Tabs>
 			<StyledButton
 				variant="contained"
@@ -198,114 +187,38 @@ export default function Header() {
 					},
 				}}
 			>
+				<Div />
 				<List disablePadding>
-					<ListItemButton
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(0);
-						}}
-						divider
-						component={RouterLink}
-						to="/"
-					>
-						<ListItemText
-							sx={{
-								...theme.typography.tab,
-								opacity: 0.7,
-								...(value === 0 && { opacity: 1 }),
+					{routes.map((route, index) => (
+						<ListItemButton
+							key={`${route}${route.activeIndex}`}
+							onClick={() => {
+								setOpenDrawer(false);
+								setValue(index);
 							}}
-							disableTypography
+							divider
+							component={RouterLink}
+							to={route.link}
 						>
-							Home
-						</ListItemText>
-					</ListItemButton>
-					<ListItemButton
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(1);
-						}}
-						divider
-						component={RouterLink}
-						to="/services"
-					>
-						<ListItemText
-							sx={{
-								...theme.typography.tab,
-								opacity: 0.7,
-								...(value === 1 && { opacity: 1 }),
-							}}
-							disableTypography
-						>
-							Services
-						</ListItemText>
-					</ListItemButton>
-					<ListItemButton
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(2);
-						}}
-						divider
-						component={RouterLink}
-						to="/revolution"
-					>
-						<ListItemText
-							sx={{
-								...theme.typography.tab,
-								opacity: 0.7,
-								...(value === 2 && { opacity: 1 }),
-							}}
-							disableTypography
-						>
-							The Revolution
-						</ListItemText>
-					</ListItemButton>
-					<ListItemButton
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(3);
-						}}
-						divider
-						component={RouterLink}
-						to="/about"
-					>
-						<ListItemText
-							sx={{
-								...theme.typography.tab,
-								opacity: 0.7,
-								...(value === 3 && { opacity: 1 }),
-							}}
-							disableTypography
-						>
-							About Us
-						</ListItemText>
-					</ListItemButton>
-					<ListItemButton
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(4);
-						}}
-						divider
-						component={RouterLink}
-						to="/contact"
-					>
-						<ListItemText
-							sx={{
-								...theme.typography.tab,
-								opacity: 0.7,
-								...(value === 4 && { opacity: 1 }),
-							}}
-							disableTypography
-						>
-							Contact Us
-						</ListItemText>
-					</ListItemButton>
+							<ListItemText
+								sx={{
+									...theme.typography.tab,
+									opacity: 0.7,
+									...(value === index && { opacity: 1 }),
+								}}
+								disableTypography
+							>
+								{route.name}
+							</ListItemText>
+						</ListItemButton>
+					))}
 					<ListItemButton
 						onClick={() => {
 							setOpenDrawer(false);
 							setValue(5);
 						}}
 						sx={{
-							...theme.typography.tab,
+							backgroundColor: theme.palette.common.orange,
 							opacity: 0.7,
 							...(value === 5 && { opacity: 1 }),
 						}}
@@ -337,7 +250,7 @@ export default function Header() {
 	return (
 		<>
 			<ElevationScroll>
-				<AppBar position="fixed">
+				<AppBar position="fixed" sx={{ zIndex: theme.zIndex.modal + 1 }}>
 					<Toolbar disableGutters>
 						<Button
 							component={RouterLink}
@@ -368,10 +281,12 @@ export default function Header() {
 							open={openMenu}
 							onClose={handleClose}
 							MenuListProps={{ onMouseLeave: handleClose }}
+							keepMounted
+							sx={{ zIndex: 1302 }}
 						>
 							{menuOptions.map((option, i) => (
 								<MenuItem
-									key={i}
+									key={`${option}${i}`}
 									onClick={(e) => {
 										handleMenuItemClick(e, i);
 										setValue(1);
