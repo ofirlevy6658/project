@@ -38,12 +38,12 @@ const Img = styled("img")``;
 
 const Div = styled(`div`)(({ theme }) => ({
 	...theme.mixins.toolbar,
-	marginBottom: "3em",
+	marginBottom: "4em",
 	[theme.breakpoints.down("lg")]: {
-		marginBottom: "2em",
+		marginBottom: "3em",
 	},
 	[theme.breakpoints.down("sm")]: {
-		marginBottom: "1.25em",
+		marginBottom: "2.25em",
 	},
 }));
 
@@ -58,7 +58,12 @@ const StyledButton = styled(Button)(({ theme }) => ({
 	},
 }));
 
-export default function Header() {
+export default function Header({
+	value,
+	setValue,
+	selectedIndex,
+	setSelectedIndex,
+}) {
 	const theme = useTheme();
 	const matches = useMediaQuery(theme.breakpoints.down("md"));
 	const iOS =
@@ -66,32 +71,33 @@ export default function Header() {
 		/iPad|iPhone|iPod/.test(navigator.userAgent);
 
 	const [openDrawer, setOpenDrawer] = useState(false);
-	const [value, setValue] = useState(0);
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [selectedIndex, setSelectedIndex] = useState(0);
 	const openMenu = Boolean(anchorEl);
 
-	const menuOptions = [
-		{ name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
-		{
-			name: "Custom Software Development",
-			link: "/customsoftware",
-			activeIndex: 1,
-			selectedIndex: 1,
-		},
-		{
-			name: "iOS/Android App Development",
-			link: "/mobileapps",
-			activeIndex: 1,
-			selectedIndex: 2,
-		},
-		{
-			name: "Website Development",
-			link: "/websites",
-			activeIndex: 1,
-			selectedIndex: 3,
-		},
-	];
+	const menuOptions = useMemo(
+		() => [
+			{ name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
+			{
+				name: "Custom Software Development",
+				link: "/customsoftware",
+				activeIndex: 1,
+				selectedIndex: 1,
+			},
+			{
+				name: "iOS/Android App Development",
+				link: "/mobileapps",
+				activeIndex: 1,
+				selectedIndex: 2,
+			},
+			{
+				name: "Website Development",
+				link: "/websites",
+				activeIndex: 1,
+				selectedIndex: 3,
+			},
+		],
+		[]
+	);
 
 	const routes = useMemo(
 		() => [
@@ -126,7 +132,7 @@ export default function Header() {
 					break;
 			}
 		});
-	}, [value, selectedIndex, menuOptions, routes]);
+	}, [value, setValue, setSelectedIndex, selectedIndex, menuOptions, routes]);
 
 	const handleChange = (e, newValue) => {
 		setValue(newValue);

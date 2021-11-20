@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import theme from "./ui/Theme";
 import Header from "./ui/Header";
+import Footer from "./ui/Footer";
 
 function App() {
+	const [value, setValue] = useState(0);
+	const [selectedIndex, setSelectedIndex] = useState(0);
 	return (
 		<ThemeProvider theme={theme}>
 			<BrowserRouter>
-				<Header />
+				<Header
+					value={value}
+					setValue={setValue}
+					selectedIndex={selectedIndex}
+					setSelectedIndex={setSelectedIndex}
+				/>
 				<Routes>
-					<Route path="/" />
+					<Route path="/" element={<div style={{ height: "2000px" }} />} />
 					<Route path="/customsoftware" />
 					<Route path="/mobileapps" />
 					<Route path="/websites" />
@@ -19,6 +27,12 @@ function App() {
 					<Route path="/contact" />
 					<Route path="/estimate" />
 				</Routes>
+				<Footer
+					value={value}
+					setValue={setValue}
+					selectedIndex={selectedIndex}
+					setSelectedIndex={setSelectedIndex}
+				/>
 			</BrowserRouter>
 		</ThemeProvider>
 	);
