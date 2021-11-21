@@ -2,18 +2,18 @@ import { createTheme } from "@mui/material/styles";
 
 const arcBlue = "#0B72B9";
 const arcOrange = "#FFBA60";
-
+const arcGrey = "#868686";
 export default createTheme({
 	palette: {
 		common: {
-			blue: `${arcBlue}`,
-			orange: `${arcOrange}`,
+			blue: arcBlue,
+			orange: arcOrange,
 		},
 		primary: {
-			main: `${arcBlue}`,
+			main: arcBlue,
 		},
 		secondary: {
-			main: `${arcOrange}`,
+			main: arcOrange,
 		},
 	},
 	typography: {
@@ -29,6 +29,31 @@ export default createTheme({
 			fontSize: "1rem",
 			textTransform: "none",
 			color: "white",
+		},
+		h2: {
+			fontFamily: "Raleway",
+			fontWeight: "700",
+			fontSize: "2.5rem",
+			color: arcBlue,
+			lineHeight: 1.5,
+		},
+		h4: {
+			fontFamily: "Raleway",
+			fontWeight: "700",
+			fontSize: "1.75rem",
+			color: arcBlue,
+		},
+		subtitle1: {
+			fontSize: "1.25rem",
+			fontWeight: "300",
+			color: arcGrey,
+		},
+		learnButton: {
+			borderWidth: 2,
+			textTransform: "none",
+			borderRadius: 50,
+			fontFamily: "Roboto",
+			fontWeight: "bold",
 		},
 	},
 	components: {
