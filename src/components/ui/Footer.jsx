@@ -125,7 +125,7 @@ export default function Footer({
 							component={Link}
 							to="/mobileapps"
 						>
-							Mobile App Development
+							iOS/Android App Development
 						</Grid>
 						<Grid
 							item

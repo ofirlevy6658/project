@@ -37,16 +37,26 @@ export default createTheme({
 			color: arcBlue,
 			lineHeight: 1.5,
 		},
+		h3: {
+			fontFamily: "Pacifico",
+			fontSize: "2.5rem",
+			color: arcBlue,
+		},
 		h4: {
 			fontFamily: "Raleway",
-			fontWeight: "700",
 			fontSize: "1.75rem",
+			fontWeight: "700",
 			color: arcBlue,
 		},
 		subtitle1: {
 			fontSize: "1.25rem",
 			fontWeight: "300",
 			color: arcGrey,
+		},
+		subtitle2: {
+			color: "white",
+			fontSize: "1.25rem",
+			fontWeight: "300",
 		},
 		learnButton: {
 			borderWidth: 2,
